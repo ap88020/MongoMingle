@@ -52,6 +52,7 @@ export const signup =  async (req,res) => {
         })
     }
 }
+
 export const login = async (req,res) => {
     const { email, password } = req.body;
     try {
@@ -83,6 +84,7 @@ export const login = async (req,res) => {
         })
     }
 }
+
 export const logout =  (req,res) => {
     try {
         res.cookie("token","",{maxAge : 0});
@@ -97,3 +99,13 @@ export const logout =  (req,res) => {
     }
 }
 
+export const updateProfile = async (req,res) => {
+    try {
+        
+    } catch (error) {
+        console.log(`Error :- ${error.message}`);
+        res.status(400).json({
+            message : "Internal server error"
+        })
+    }
+}
