@@ -58,10 +58,13 @@ export const sendMessage = async (req,res) => {
 
         await newMessage.save();
 
-        // res.status(200).json({
-        //     newMessage,
-        // })
+        res.status(200).json({
+            newMessage,
+        })
     } catch (error) {
-        
+        console.log(`Error : ${error.message}`);
+        res.status(400).json({
+            error : "Internal server Error",
+        })        
     }
 }
