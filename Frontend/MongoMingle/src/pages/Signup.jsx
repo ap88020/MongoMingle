@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
-import { MessageSquare, User } from 'lucide-react';
+import { Eye, EyeClosed, EyeClosedIcon, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from 'lucide-react';
+import AuthImagePattern from '../components/AuthImagePattern';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,7 +12,6 @@ const Signup = () => {
     password : ""
   });
   const {signup , isSigningUp} = useAuthStore();
-  
   const validateForm = () => {};
 
   const submitHandler = (e) => {
@@ -34,6 +35,7 @@ const Signup = () => {
               </div>
               {/* FORM */}
               <form onSubmit={submitHandler} className='space-y-6'>
+
                   <div className='form-control'>
                     <label className='label'>
                         <span className='label-text font-medium'>Full Name</span>
@@ -44,18 +46,81 @@ const Signup = () => {
                       </div>
                       <input
                         type="text"
-                        className={`input-borderd w-full pl-10`}
+                        className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
                         placeholder='John Doe'
                         value={formData.value}
                         onChange={(e) => setFormData({...formData, fullName : e.target.value})}
                        />
                     </div>
+                    {/* email */}
+                    <label className='label'>
+                        <span className='label-text font-medium'>Email</span>
+                    </label>
+                    <div className='relative'>
+                      <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                        < Mail className='size-5 text-base-content/40' />
+                      </div>
+                      <input
+                        type="email"
+                        className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
+                        placeholder='John@gmail.com'
+                        value={formData.value}
+                        onChange={(e) => setFormData({...formData, email : e.target.value})}
+                       />
+                    </div>
+                    {/* password */}
+                    <label className='label'>
+                        <span className='label-text font-medium'>Password</span>
+                    </label>
+                    <div className='relative'>
+                      <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                        < Lock className='size-5 text-base-content/40' />
+                      </div>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
+                        placeholder='Password'
+                        value={formData.value}
+                        onChange={(e) => setFormData({...formData, password : e.target.value})}
+                       />
+                       <button
+                        onClick={() => setShowPassword(!showPassword)} 
+                        className='absolute inset-y-0 right-2 pl-3 flex items-center'>
+                        {showPassword ? < EyeOff className='size-5 text-base-content/40' /> : < Eye className='size-5 text-base-content/40' /> }
+                      </button>
+                    </div>
                   </div>
+                  <button
+                    type='submit'
+                    className='btn btn-secondary w-full'
+                    disabled={isSigningUp} 
+                  >
+                    {
+                      isSigningUp ? (
+                        < Loader2 className='size-5 animate-spin' />
+                      ) : (
+                        "Create Account"
+                      )
+                    }
+                  </button>
               </form>
+              <div className='text-center'>
+                <p className='text-base-content/60'>
+                    Already have an account? {" "}
+                    <Link
+                      to="/login"
+                      className='link link-secondary' 
+                    >
+                      signIn
+                    </Link>
+                </p>
+              </div>
             </div>
         </div>
+        {/* Right side  */}
+        < AuthImagePattern title={"Join Our Community"} subTitle={"Connect with friends, share friends and stay in touch with your loved ones."} />
     </div>
   )
 }
 
-export default Signup
+export default Signup ;
