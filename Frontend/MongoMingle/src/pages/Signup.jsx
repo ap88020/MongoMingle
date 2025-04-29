@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { Eye, EyeClosed, EyeClosedIcon, EyeOff, Loader2, Lock, Mail, MessageSquare, User } from 'lucide-react';
 import AuthImagePattern from '../components/AuthImagePattern';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,10 +13,22 @@ const Signup = () => {
     password : ""
   });
   const {signup , isSigningUp} = useAuthStore();
-  const validateForm = () => {};
+  const validateForm = () => {
+    if(!formData.fullName.trim()) return toast.error("Full name is required");
+    if(!formData.email.trim()) return toast.error("Email is required");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(formData.email)) return toast.error("Please enter a validate email");
+    if(!formData.password.trim()) return toast.error("Password is required");
+    if(formData.password.length < 6) return toast.error("Password must be atleast 6 characters");
+
+    return true;
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    const success = validateForm();
+    if(success === true) signup(formData);
   };
 
   return (
@@ -48,7 +61,7 @@ const Signup = () => {
                         type="text"
                         className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
                         placeholder='John Doe'
-                        value={formData.value}
+                        value={formData.fullName}
                         onChange={(e) => setFormData({...formData, fullName : e.target.value})}
                        />
                     </div>
@@ -64,7 +77,7 @@ const Signup = () => {
                         type="email"
                         className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
                         placeholder='John@gmail.com'
-                        value={formData.value}
+                        value={formData.email}
                         onChange={(e) => setFormData({...formData, email : e.target.value})}
                        />
                     </div>
@@ -80,10 +93,11 @@ const Signup = () => {
                         type={showPassword ? "text" : "password"}
                         className={`input-borderd w-full pl-10 pt-2 pb-2 bg-transparent border border-white rounded`}
                         placeholder='Password'
-                        value={formData.value}
+                        value={formData.password}
                         onChange={(e) => setFormData({...formData, password : e.target.value})}
                        />
                        <button
+                        type='button'
                         onClick={() => setShowPassword(!showPassword)} 
                         className='absolute inset-y-0 right-2 pl-3 flex items-center'>
                         {showPassword ? < EyeOff className='size-5 text-base-content/40' /> : < Eye className='size-5 text-base-content/40' /> }

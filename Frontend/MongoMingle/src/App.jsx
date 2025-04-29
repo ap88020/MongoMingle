@@ -8,20 +8,20 @@ import Profile from './pages/Profile';
 import HomePage from './pages/Home';
 
 import { Loader } from 'lucide-react';
+import {Toaster} from 'react-hot-toast';
 import { useAuthStore } from './store/useAuthStore';
+
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
 
-  // Run the authentication check once on component mount
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
-  console.log('authUser:', authUser); // Debugging: Check the authUser state
-  console.log('isCheckingAuth:', isCheckingAuth); // Debugging: Check if we are still loading
+  console.log('authUser:', authUser); 
+  console.log('isCheckingAuth:', isCheckingAuth);
 
-  // Show loader until the authentication check is complete
   if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -34,7 +34,6 @@ const App = () => {
     <div>
       <Navbar />
       <Routes>
-        {/* Conditionally render HomePage or redirect to login */}
         <Route
           path="/"
           element={authUser ? <HomePage /> : <Navigate to="/login" />}
@@ -44,6 +43,7 @@ const App = () => {
         <Route path="/setting" element={<SettingPage />} />
         <Route path="/profile" element={authUser ? <Profile /> : < Navigate to={"/login"} /> } />
       </Routes>
+      < Toaster />
     </div>
   );
 }
