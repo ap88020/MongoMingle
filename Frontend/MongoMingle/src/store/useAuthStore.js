@@ -56,10 +56,13 @@ export const useAuthStore = create(persist(
       } catch (error) {
         toast.error(error.response?.data?.message || "Logout failed");
       }
-    }
+    },
+
+    uploadImageProfile : async () => {}
+    
   }),
   {
-    name: "auth-storage",
+    name: "auth-storage", 
     partialize: (state) => ({ authUser: state.authUser })
   }
 ));

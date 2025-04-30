@@ -26,7 +26,7 @@ const Navbar = () => {
             <h1>MongoMingle</h1>
           </Link>
           <div className='flex items-center gap-2'>
-            <Link to="/settings" className='btn btn-sm gap-2 transition-colors'>
+            <Link to="/profile" className='btn btn-sm gap-2 transition-colors'>
               <User className='w-4 h-4' />
               <span className='hidden sm:inline'>Profile</span>
             </Link>
