@@ -14,7 +14,7 @@ export const useAuthStore = create(persist(
     checkAuth: async () => {
       try {
         const res = await axiosInstance.get("/auth/check");
-        set({ authUser: res.data.user });
+        set({ authUser: res.data });
       } catch (error) {
         set({ authUser: null });
       } finally {
@@ -58,7 +58,19 @@ export const useAuthStore = create(persist(
       }
     },
 
-    uploadImageProfile : async () => {}
+    uploadImageProfile : async (data) => {
+      set({isUpdateProfile : true});
+      try {
+        const res =  await axiosInstance.put("/update-profile" , data);
+        set({authUser : res.data});
+        toast.success("Profile updated successfully");
+      } catch (error) {
+        console.log("error in update profile :" , error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+      } finally{
+        set({isUpdateProfile : false});
+      }
+    }
     
   }),
   {

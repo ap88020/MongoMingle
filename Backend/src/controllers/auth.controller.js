@@ -89,12 +89,12 @@ export const login = async (req,res) => {
 export const logout =  (req,res) => {
     try {
         res.cookie("token","",{maxAge : 0});
-        res.status(400).json({
+        res.status(200).json({
             message : "Logout successfully",
         })
     } catch (error) {
         console.log(`Error : ${error.message}`);
-        res.status(200).json({
+        res.status(400).json({
             message : "Internal Server Error",
         })
     }
