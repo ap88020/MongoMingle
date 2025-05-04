@@ -10,7 +10,7 @@ export const generateToken = async (userId,res) => {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "development" ? "lax" : "strict",
         secure: process.env.NODE_ENV !== "development" ? true : false,
-      });
+    });
       
-    return token
+    return token;
 }

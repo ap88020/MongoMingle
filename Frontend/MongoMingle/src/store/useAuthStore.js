@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { axiosInstance } from '../lib/axios'
 import toast from 'react-hot-toast';
+import  Axios  from 'axios';
 
 export const useAuthStore = create(persist(
   (set) => ({
@@ -61,7 +62,7 @@ export const useAuthStore = create(persist(
     uploadImageProfile : async (data) => {
       set({isUpdateProfile : true});
       try {
-        const res =  await axiosInstance.put("/update-profile" , data);
+        const res =  await Axios.put("http://localhost:3000/api/update-profile" , data);
         set({authUser : res.data});
         toast.success("Profile updated successfully");
       } catch (error) {

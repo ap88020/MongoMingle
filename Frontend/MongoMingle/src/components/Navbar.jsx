@@ -30,7 +30,7 @@ const Navbar = () => {
               <User className='w-4 h-4' />
               <span className='hidden sm:inline'>Profile</span>
             </Link>
-            <Link to="/profile" className='btn btn-sm gap-2 transition-colors'>
+            <Link to="/setting" className='btn btn-sm gap-2 transition-colors'>
               <Settings className='w-4 h-4' />
               <span className='hidden sm:inline'>Settings</span>
             </Link>
