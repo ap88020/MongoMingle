@@ -1,6 +1,5 @@
 import { THEMES } from '../constants';
 import React, { useState } from 'react'
-import { Send, Slice } from 'lucide-react';
 
 const Setting = () => {
   const [ theme, setTheme ] = useState();

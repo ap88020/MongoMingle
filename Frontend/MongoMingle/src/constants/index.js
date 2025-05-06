@@ -6,7 +6,7 @@ export const THEMES = [
     "emerald",
     "corporate",
     "synthwave",
-    "retro",
+    "Retro",
     "cyberpunk",
     "valentine",
     "halloween",
