@@ -1,21 +1,20 @@
 import messageModel from "../models/message.model.js";
-import userModel from "../models/user.model.js"
+import userModel from "../models/user.model.js";
 import cloudinary from "../lib/cloudinary/cloudinary.js";
 
-export const getUsersForSidebar = async (req,res) => {
+export const getUsersForSidebar = async (req, res) => {
     try {
         const loggedInUser = req.user._id;
-        const filteredUser = await userModel.find({_id : {$ne : loggedInUser}}).select("-password");
-        res.status(200).json({
-            filteredUser,
-        })
+        const filteredUser = await userModel.find({ _id: { $ne: loggedInUser } }).select("-password");
+        res.status(200).json(filteredUser);
     } catch (error) {
         console.log(`Error :- ${error.message}`);
-        res.json({
-            error : "Internal server error",
-        })
+        res.status(500).json({
+            error: "Internal server error",
+        });
     }
-}
+};
+
 
 export const getMessages = async (req,res) => {
     try {
