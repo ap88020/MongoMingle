@@ -11,6 +11,7 @@ export const useAuthStore = create(persist(
     isLoggingIn: false,
     isUpdateProfile: false,
     isCheckingAuth: true,
+    onlineUsers: [],
     
     checkAuth: async () => {
       try {

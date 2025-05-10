@@ -2,12 +2,13 @@ import { MessageSquare, User } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useChatStore } from '../store/useChatStore'
 import SideBarSkelton from './sideBarSkelton/SideBarSkelton'
+import { useAuthStore } from '../store/useAuthStore'
 
 const SideBar = () => {
     const {getUsers, users ,selectedUser, setSelectedUser, isUsersLoading} = useChatStore();
-    const onlineUsers = [];
+    const { onlineUsers } = useAuthStore(); 
 
-    console.log(users);
+    // console.log(users);
     useEffect( ()=> {
         getUsers();
     },[getUsers]);
