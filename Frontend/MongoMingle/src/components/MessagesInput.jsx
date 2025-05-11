@@ -11,7 +11,7 @@ const MessagesInput = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if(!file.type.startWith("image/")){
+    if(!file.type.startsWith("image/")){
       toast.error("please select an image file");
       return;
     }
@@ -21,7 +21,7 @@ const MessagesInput = () => {
       setImagePreview(reader.result);
     }
   
-    reader.readAsDataURL();
+    reader.readAsDataURL(file);
   };
   const removeImage = () => {
     setImagePreview(null);
@@ -71,13 +71,15 @@ const MessagesInput = () => {
               placeholder='Type a message...' 
               value={text}
               onChange={(e) => setText(e.target.value)} 
-              
+            
             />
+
             <input
               type="file"
               accept="image/*"
               className='hidden'
               ref={fileInputRef}
+              onChange={handleImageChange}
              />
 
             <button
