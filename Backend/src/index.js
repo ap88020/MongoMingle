@@ -21,7 +21,7 @@ app.use(cors({
 
 dotenv.config();
 app.use('/api/auth/', authRoutes);
-app.use('/api/message/', messageRoute);
+app.use('/api/messages/', messageRoute);
 
 const port = process.env.PORT;
 
