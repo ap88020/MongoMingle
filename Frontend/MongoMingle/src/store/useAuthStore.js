@@ -63,7 +63,9 @@ export const useAuthStore = create(persist(
     uploadImageProfile : async (data) => {
       set({isUpdateProfile : true});
       try {
-        const res =  await Axios.put("http://localhost:3000/api/update-profile" , data);
+        const res =  await Axios.put("http://localhost:3000/api/auth/update-profile" , data ,{
+          withCredentials: true,
+        });
         set({authUser : res.data});
         toast.success("Profile updated successfully");
       } catch (error) {

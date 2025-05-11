@@ -15,16 +15,34 @@ const MessagesInput = () => {
       toast.error("please select an image file");
       return;
     }
-
+  
     const reader = new FileReader();
     reader.onload = () => {
       setImagePreview(reader.result);
     }
-
+  
     reader.readAsDataURL();
   };
-  const removeImage = () => {};
-  const handleSendMessage = () => {};
+  const removeImage = () => {
+    setImagePreview(null);
+    if(fileInputRef.current) fileInputRef.current.value = "";
+  };
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if(!text.trim() && !imagePreview) return;
+
+    try {
+      await sendMessage({
+        text : text.trim(),
+        image : imagePreview
+      })
+      setText("");
+      setImagePreview(null);
+      if(fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+        console.error("Failed to send message:" , error);
+    }
+  };
 
   return (
     <div className='p-4 w-full'>
