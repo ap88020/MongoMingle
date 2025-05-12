@@ -11,7 +11,7 @@ const Home = () => {
       <div className='flex items-center justify-center pt-20 px-4'>
         <div className='bg-base-100 rounded-lg mt-[-3rem] shadow-green-700 w-full max-w-6xl h-[calc(100vh-8rem)] flex overflow-hidden items-start'>
           < SideBar/> 
-          <div className='flex-1 px-2 py-1'>
+          <div className='flex-1 px-2 py-1 h-full overflow-hidden'>
               {!selectedUser ? <NoSelectedChat /> : <ChatContainer />}
           </div>
         </div>
