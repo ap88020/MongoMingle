@@ -7,12 +7,15 @@ import { useAuthStore } from '../store/useAuthStore';
 import { formatMessageTime } from '../lib/utils';
 
 const ChatContainer = () => {
-  const { messages, getMessages, isMessagesLoading, selectedUser } = useChatStore();
+  const { messages, getMessages, isMessagesLoading, selectedUser , subscribeToMessages , unSubscribeFromMessages} = useChatStore();
   const { authUser } = useAuthStore();
 
   useEffect(() => {
     if (selectedUser?._id) getMessages(selectedUser._id);
-  }, [selectedUser?._id]);
+    subscribeToMessages();
+
+    return () => unSubscribeFromMessages(); 
+  }, [selectedUser?._id , subscribeToMessages , unSubscribeFromMessages]);
 
   if (isMessagesLoading) return (
     <div className="flex flex-col h-full">
@@ -30,15 +33,16 @@ const ChatContainer = () => {
     {messages.map((message) => (
       <div
         key={message._id}
-        className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+        // className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+      className={`chat ${String(message.senderId).trim() === String(authUser._id).trim() ? "chat-end" : "chat-start"}`}
       >
         <div className="chat-image avatar">
           <div className="size-10 rounded-full border">
             <img
               src={
                 message.senderId === authUser._id
-                  ? authUser.profilePic || "/vite.svg"
-                  : selectedUser.profilePic || "/vite.svg"
+                ? selectedUser.profilePic || "/vite.svg"
+                : authUser.profilePic || "/vite.svg"
               }
               alt="profile-pic"
             />

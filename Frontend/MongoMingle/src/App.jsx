@@ -14,13 +14,15 @@ import { useThemeStore } from './store/useThemeStore';
 
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth , onlineUsers} = useAuthStore();
   const { theme } = useThemeStore();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
   
+
+  console.log({ onlineUsers });
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") || "retro";

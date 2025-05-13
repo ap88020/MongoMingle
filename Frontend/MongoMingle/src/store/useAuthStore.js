@@ -3,20 +3,25 @@ import { persist } from 'zustand/middleware'
 import { axiosInstance } from '../lib/axios'
 import toast from 'react-hot-toast';
 import  Axios  from 'axios';
+import { io } from 'socket.io-client';
+
+const BASE_URL = "http://localhost:3000";
 
 export const useAuthStore = create(persist(
-  (set) => ({
+  (set,get) => ({
     authUser: null,
     isSigningUp: false,
     isLoggingIn: false,
     isUpdateProfile: false,
     isCheckingAuth: true,
     onlineUsers: [],
-    
+    socket: null,
+
     checkAuth: async () => {
       try {
         const res = await axiosInstance.get("/auth/check");
         set({ authUser: res.data });
+        get().connectSocket();
       } catch (error) {
         set({ authUser: null });
       } finally {
@@ -43,6 +48,7 @@ export const useAuthStore = create(persist(
         const res = await axiosInstance.post("/auth/login", data);
         set({ authUser: res.data });
         toast.success("You Logged in successfully");
+        get().connectSocket();
       } catch (error) {
         toast.error(error.response?.data?.message || "Login failed");
       } finally {
@@ -55,6 +61,7 @@ export const useAuthStore = create(persist(
         await axiosInstance.post("/auth/logout");
         set({ authUser: null });
         toast.success("Logged out successfully");
+        get().disconnectSocket();
       } catch (error) {
         toast.error(error.response?.data?.message || "Logout failed");
       }
@@ -74,7 +81,27 @@ export const useAuthStore = create(persist(
       } finally{
         set({isUpdateProfile : false});
       }
-    }
+    },
+
+    connectSocket : () => {
+      const { authUser } = get();
+      if (!authUser || get().socket?.connected) return;
+
+      const socket = io(BASE_URL, {
+        query : {
+          userId : authUser._id,
+        }
+      });
+      socket.connect();
+      set({socket : socket});
+      
+      socket.on("getOnlineUsers",(userIds) => {
+        set({ onlineUsers : userIds });
+      })
+    },
+    disconnectSocket : () => {
+      if (get().socket?.connected) get().socket.disconnect();
+    },
     
   }),
   {
