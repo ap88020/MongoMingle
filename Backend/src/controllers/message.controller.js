@@ -56,16 +56,16 @@ export const sendMessage = async (req,res) => {
             image : imagUrl,
         })
 
-        await newMessage.save();
-        const receiverSocketId = getReceiverSocketId(receverId);
+            await newMessage.save();
+            const receiverSocketId = getReceiverSocketId(receverId);
 
-        if(receiverSocketId){
-            io.to(receiverSocketId).emit("newMessages" , newMessage);
-        }
+            if(receiverSocketId){
+                io.to(receiverSocketId).emit("newMessages" , newMessage);
+            }
 
-        res.status(200).json({
-            newMessage,
-        })
+            res.status(200).json({
+                newMessage
+            })
     } catch (error) {
         console.log(`Error : ${error.message}`);
         res.status(400).json({

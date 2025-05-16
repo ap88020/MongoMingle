@@ -30,7 +30,8 @@ export const useChatStore = create((set,get) => ({
             const messages = Array.isArray(res.data) ? res.data : res.data.messages || [];
             set({messages});
         } catch (error) {
-            toast.error(error.response?.data.message || "something is wrong");
+            toast.error(error.response?.data?.error || "Something went wrong");
+
         } finally {
             set({isMessagesLoading : false});
         }
@@ -39,7 +40,8 @@ export const useChatStore = create((set,get) => ({
         const {selectedUser , messages} = get();
         try {
             const res = await axiosInstance.post(`/messages/send/${selectedUser._id}`,messageData);
-            set({messages:[...messages,res.data]});
+            const { newMessage } = res.data;
+            set({ messages: [...messages, newMessage] });
         } catch (error) {
             toast.error(error.response.data.messages || "something is wrong");
         }
@@ -53,21 +55,16 @@ export const useChatStore = create((set,get) => ({
         if(!socket) return;
 
         socket.off("newMessages");
-
-        // socket.on("newMessages", (newMessage) => {
-        //     // const currentSelected = get()/
-        //     set({ messages : [...get().messages , newMessage] })
-        // });
         socket.on("newMessages", (newMessage) => {
-  const currentSelected = get().selectedUser;
-  if (newMessage.senderId === currentSelected?._id || newMessage.receiverId === currentSelected?._id) {
-    set({ messages: [...get().messages, newMessage] });
-  }
+        const currentSelected = get().selectedUser;
+        if (newMessage.senderId === currentSelected?._id || newMessage.receiverId === currentSelected?._id) {
+            set({ messages: [...get().messages, newMessage] });
+        }
 });
     },
     unSubscribeFromMessages : () => {
         const socket = useAuthStore.getState().socket;
-        socket.off("newMessages");
+        if (socket) socket.off("newMessages");
     },
     setSelectedUser : (selectedUser) => {set({selectedUser})},
 }));
